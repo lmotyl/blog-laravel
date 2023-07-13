@@ -1,5 +1,8 @@
 FROM php:8.2-fpm
 
+
+ARG WWWUSER
+
 COPY wait-for-it.sh /usr/bin/wait-for-it
 
 RUN chmod +x /usr/bin/wait-for-it
@@ -11,6 +14,9 @@ RUN apt-get update && \
     docker-php-ext-install -j$(nproc) zip opcache intl pdo_pgsql pgsql && \
     docker-php-ext-enable apcu pdo_pgsql sodium && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN usermod -u $WWWUSER www-data
+
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 

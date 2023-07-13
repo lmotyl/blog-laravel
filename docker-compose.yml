@@ -13,12 +13,16 @@ services:
         container_name: php-fpm
         build:
             context: ./.docker/php-fpm
+            args:
+                WWWGROUP: '${WWWGROUP}'
+                WWWUSER: '${WWWUSER}'
         depends_on:
             - db
         environment:
             - APP_ENV=${APP_ENV}
             - APP_SECRET=${APP_SECRET}
             - DATABASE_URL=${DATABASE_URL}
+            - WWWUSER=${WWWUSER}
         volumes:
             - ./:/var/www
     nginx:
